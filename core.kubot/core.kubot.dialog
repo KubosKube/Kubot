@@ -127,7 +127,7 @@ on *:dialog:core.Kubot.ScriptManager:sclick:*: {
   if ($did == 11) {
     ; The simplest part of the whole file loader...
     ; Open the Scripts Folder.
-    run $mircdir $+ scripts\
+    run $qt($mircdir $+ scripts)
   }
 
   if ($did isnum 13-14) {
@@ -175,7 +175,7 @@ alias core.kubot.scriptmanager.save {
     ; If script was meant to be loaded...
     if ($2 == load) {
       if (!$script($mircdir $+ $3-)) {
-        load -rs $mircdir $+ $3-
+        load -rs $qt($mircdir $+ $3-)
       }
       else {
         ;echo -a That script is already loaded.
@@ -184,7 +184,7 @@ alias core.kubot.scriptmanager.save {
     ; If script was meant to be unloaded...
     if ($2 == unload) {
       if ($script($mircdir $+ $3-)) {
-        unload -rs $mircdir $+ $3-
+        unload -rs $qt($mircdir $+ $3-)
       }
       else {
         ;echo -a That script is already unloaded.
@@ -198,7 +198,7 @@ on *:dialog:core.Kubot.ScriptManager:dclick:5-7: {
   var %folder $nofile($mircdir $+ $did($dname, $did).seltext)
   ;echo -a Attempted to assemble this: %folder
   if ($isdir(%folder)) {
-    run %folder
+    run $qt(%folder)
   }
   else {
     echo -a For some reason, Kubot was unable to find " %folder "
