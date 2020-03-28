@@ -25,7 +25,7 @@ alias kubot.readini {
     var %filename.readini $replace($isalias($1).fname,$nopath($isalias($1).fname), $5 $+ $2)
   }
 
-  var %result $readini(%filename.readini, $3, $4)
+  var %result $readini(%filename.readini, n, $3, $4)
   ;echo -a %result
   return %result
 }
@@ -46,7 +46,7 @@ alias kubot.writeini {
 
   var %result %filename.writeini
   ;echo -a %result
-  writeini %filename.writeini $3 $4 $5
+  writeini -n $qt(%filename.writeini) $3 $4 $5
 }
 
 alias kubot.config {
@@ -89,17 +89,17 @@ alias kubot.newscript {
   var %instruction $1
   var %filename $2
   var %filepath $mircdir $+ \scripts\Kubot-Scripts\ $+ %filename $+ \
-  mkdir %filepath
+  mkdir $qt(%filepath)
 
   ; Set up files inside of the new folder.
-  write %filepath $+ %filename $+ .mrc This is intended to be your main MRC file. I encourage that you use it as a library for other commands, particularly chat commands. See the file structure for core.kubot for an example. You can of course use this however you see fit, my recommendation is just a suggestion.
-  write %filepath $+ %filename $+ .dialog This is intended to store your Dialog structures, and the commands for your dialog buttons. See core.kubot.dialog for an example. You can of course use this however you see fit, my recommendation is just a suggestion.
-  write %filepath $+ %filename $+ .config This is intended to store your configuration options. Along with regular /writeini and $ $+ readini , you can modify it with /kubot.writeini and you can read it with $ $+ kubot.readini . You can optionally do both with /kubot.config or $ $+ kubot.config , just read the readme for core.kubot to see detailed instructions on how to do either.
-  write %filepath $+ readme.text This is where I recommend you explain how your plugin works.
+  write $qt(%filepath $+ %filename $+ .mrc) This is intended to be your main MRC file. I encourage that you use it as a library for other commands, particularly chat commands. See the file structure for core.kubot for an example. You can of course use this however you see fit, my recommendation is just a suggestion.
+  write $qt(%filepath $+ %filename $+ .dialog) This is intended to store your Dialog structures, and the commands for your dialog buttons. See core.kubot.dialog for an example. You can of course use this however you see fit, my recommendation is just a suggestion.
+  write $qt(%filepath $+ %filename $+ .config) This is intended to store your configuration options. Along with regular /writeini and $ $+ readini , you can modify it with /kubot.writeini and you can read it with $ $+ kubot.readini . You can optionally do both with /kubot.config or $ $+ kubot.config , just read the readme for core.kubot to see detailed instructions on how to do either.
+  write $qt(%filepath $+ readme.text) This is where I recommend you explain how your plugin works.
 
   ; If specified to load automatically, then this loads the script as soon as it's created.
   if (%instruction == load) {
-    load -rs %filepath $+ %filename $+ .mrc
-    load -rs %filepath $+ %filename $+ .dialog
+    load -rs $qt(%filepath $+ %filename $+ .mrc)
+    load -rs $qt(%filepath $+ %filename $+ .dialog)
   }
 }
